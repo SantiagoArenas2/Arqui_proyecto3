@@ -1,0 +1,379 @@
+================================================================
+   DEMOSTRACION PROYECTO 2 - JUEGO DE REFLEJOS SOBRE POCHOCO SOC
+   Arquitectura de Computadores 2026-2
+================================================================
+
+Tener este archivo abierto durante la evaluacion. Todo lo que
+esta con sangria se copia y se pega tal cual en la terminal.
+
+   1. ABRIR LA TERMINAL
+   2. GRABAR LA FPGA
+   3. LO QUE HAY QUE MOSTRAR EN LA PLACA
+   4. CAMBIAR UNA CONSTANTE Y REGENERAR game.hex
+   5. SIMULACION (solo si la piden)
+   6. SI LA PLACA NO HACE NADA
+   7. RESPUESTAS RAPIDAS
+   8. DONDE ESTA CADA COSA
+
+Cuatro cosas que no hay que olvidar:
+
+   - La terminal es la de OSS CAD Suite (start.bat), NO el CMD
+     normal. En el CMD normal ningun comando existe.
+   - En Windows se usa "build". "make" NO existe en Windows (el
+     Makefile es para Linux y Mac).
+   - Al grabar, el juego NO arranca solo: muestra 00 y espera que
+     se apriete un boton.
+   - Si un paso falla, no seguir. build ya se detiene solo.
+
+
+================================================================
+   1. ABRIR LA TERMINAL
+================================================================
+
+Doble clic en:
+
+   C:\Users\joset\Downloads\oss-cad-suite-windows-x64-20260824\oss-cad-suite\start.bat
+
+Cada linea debe empezar con [OSS CAD Suite]. Ir al proyecto:
+
+   cd /d C:\Users\joset\Desktop\arqui\proyecto2
+
+Conectar la placa y revisar que responde:
+
+   iceprog -t
+
+Debe terminar con "flash ID: 0x20 0x20 0x11 0x00" y "Bye.".
+Si dice "Can't find iCE FTDI USB device": desconectar y volver a
+conectar el USB, y repetir.
+
+
+================================================================
+   2. GRABAR LA FPGA
+================================================================
+
+   build
+
+Mientras corre, explicar cada paso. Lo que debe salir (valores
+reales de nuestra placa):
+
+   [1/5] ensamblador   sw\game.s -> sw\game.hex: 184 palabras
+                       (736 bytes de 2048), 34 etiquetas
+   [2/5] Yosys         993 SB_LUT4, 12 SB_RAM40_4K
+   [3/5] nextpnr       ICESTORM_LC: 1167/1280 91%
+                       Max frequency 46.58 MHz (PASS at 25.00 MHz)
+   [4/5] icepack       nada (sin errores)
+   [5/5] iceprog       VERIFY OK ... Bye.
+
+Que decir en cada paso:
+
+   [1/5] Nuestro ensamblador en Python traduce game.s a codigo
+         maquina: una palabra de 32 bits en hex por linea.
+   [2/5] Yosys sintetiza el Verilog a celdas de la iCE40. Las 12
+         SB_RAM40_4K son la RAM del programa (8) y el banco de
+         registros del Espino (4).
+   [3/5] nextpnr ubica y conecta las celdas en el chip. Usamos
+         91% de la FPGA. El circuito aguanta 46 MHz y el reloj de
+         la placa es de 25 MHz, asi que cumple el tiempo.
+   [4/5] icepack arma el archivo binario de configuracion.
+   [5/5] iceprog lo graba en la memoria flash de la placa.
+
+Detalle importante: game.hex queda DENTRO del bitstream. La RAM se
+inicializa con $readmemh durante la sintesis, por eso cambiar el
+programa obliga a sintetizar de nuevo.
+
+Al terminar dice: LISTO. Aprieta cualquier boton para empezar.
+
+
+================================================================
+   3. LO QUE HAY QUE MOSTRAR EN LA PLACA
+================================================================
+
+Al grabar: displays en 00 y LEDs apagados. ESTA ESPERANDO UN
+BOTON, no esta colgado.
+
+   Boton superior izquierdo  -> LED 0
+   Boton inferior izquierdo  -> LED 1
+   Boton superior derecho    -> LED 2
+   Boton inferior derecho    -> LED 3
+
+Tener papel para anotar los tiempos.
+
+--- a) Fase inicial de 3 segundos ---
+
+   Hacer:  apretar y soltar cualquier boton.
+   Se ve:  los 4 LEDs encendidos 3 segundos.
+   Decir:  "Esto pasa al empezar CADA ronda. La subrutina esperar
+            lee el contador de ciclos y repite hasta que pasan
+            75.000.000 ciclos: 3 s a 25 MHz."
+
+--- b) Ronda correcta ---
+
+   Hacer:  cuando quede UN solo LED, apretar su boton.
+   Se ve:  el tiempo en decimas: 07 = 0,7 s; 23 = 2,3 s.
+   Decir:  "El LED se enciende con un sw y en la instruccion
+            siguiente leemos el contador con lw: entre los dos
+            pasa 1 ciclo. Al apretar restamos y dividimos por
+            2.500.000 restando, porque RV32E no tiene division."
+
+--- c) Pulsacion incorrecta ---
+
+   Hacer:  en la ronda siguiente apretar OTRO boton.
+   Se ve:  EE, LEDs apagados 1 s, y vuelven los 4 LEDs.
+   Decir:  "Es la misma ronda. Las rondas correctas se conservan
+            porque el error no toca el contador de rondas (s1)
+            ni la suma (tp)."
+
+--- d) Diez rondas y el promedio ---
+
+   Hacer:  jugar hasta 10 aciertos ANOTANDO cada tiempo.
+   Se ve:  el tiempo de la ronda 10 durante 2 s, luego el
+           promedio, con los LEDs alternando 1001 / 0110.
+   Decir:  "El promedio es la suma de los diez valores mostrados
+            dividida por 10, redondeada." Y comprobarlo con el
+            papel: por ejemplo, suma 165 -> 16,5 -> se ve 17.
+
+   Cualquier boton empieza una partida nueva.
+
+
+================================================================
+   4. CAMBIAR UNA CONSTANTE Y REGENERAR game.hex
+================================================================
+
+Lo van a pedir. Ejemplo: que la fase inicial dure 5 segundos.
+
+Paso 1. Guardar copias para comparar y para volver atras:
+
+   copy /Y sw\game.s build\game_original.s
+   copy /Y sw\game.hex build\game_antes.hex
+
+Paso 2. Abrir game.s:
+
+   notepad sw\game.s
+
+   Buscar (Ctrl+F) DECIMAS_INICIO. Es la linea 44:
+
+      .equ DECIMAS_INICIO,   30                # fase con los 4 LEDs: 3,0 s
+
+   Cambiar el 30 por 50. Guardar con Ctrl+S y cerrar.
+
+   Decir: "Solo se cambian las decimas. CICLOS_INICIO se calcula
+   solo: DECIMAS_INICIO * CICLOS_DECIMA, y esa multiplicacion la
+   hace el ensamblador."
+
+Paso 3. Regenerar game.hex con el ensamblador:
+
+   python asm\asm.py sw\game.s -o sw\game.hex -l build\game.lst
+
+Paso 4. Mostrar que cambio en el codigo maquina:
+
+   fc build\game_antes.hex sw\game.hex
+
+   Deben cambiar solo dos palabras:
+      antes:  04787537  8c050513
+      ahora:  07736537  94050513
+
+   Ver esas dos instrucciones en el listado:
+
+   findstr /B /C:"0044 " /C:"0048 " build\game.lst
+
+   Decir: "Es li a0, CICLOS_INICIO. 125.000.000 no cabe en 12
+   bits, asi que el ensamblador lo parte en lui (20 bits altos)
+   y addi (12 bajos). La parte baja 0x940 tiene el bit 11 en 1:
+   addi la lee como -1728, por eso la parte alta sube a 0x07736."
+
+   Ver el valor de la constante:
+
+   findstr /C:"CICLOS_INICIO =" build\game.lst
+
+      -> CICLOS_INICIO = 125000000 (0x7735940)
+
+Paso 5. Grabar y mostrar que ahora dura 5 s:
+
+   build
+
+Paso 6. Al terminar, volver a 3 segundos y grabar:
+
+   copy /Y build\game_original.s sw\game.s
+   build
+
+OJO: el cambio va en game.s. Usar "-D" en el ensamblador no
+sirve antes de build, porque build vuelve a ensamblar game.s y
+sobrescribe game.hex.
+
+Las constantes que se pueden cambiar (lineas 42 a 49):
+
+   DECIMAS_INICIO    30   fase con los 4 LEDs: 3,0 s
+   DECIMAS_ERROR     10   EE: 1,0 s
+   DECIMAS_FINAL     20   tiempo de la ronda 10: 2,0 s
+   DECIMAS_PARPADEO   5   parpadeo final: 0,5 s
+   DECIMAS_TOPE      99   maximo mostrado: 9,9 s
+   RONDAS            10   rondas por partida
+
+Si el tiempo apremia para llegar al promedio: cambiar RONDAS a 3
+con los mismos pasos, mostrar y despues volver al original.
+
+
+================================================================
+   5. SIMULACION (solo si la piden)
+================================================================
+
+Juego completo con un jugador simulado (tarda ~1 minuto):
+
+   python asm\asm.py sw\game.s -o build\game_sim.hex -D CICLOS_DECIMA=2500
+   sim tb_game
+
+Debe terminar con:  Pruebas aprobadas: 28/28
+
+Decir: "Es el mismo programa con una decima de 2.500 ciclos en vez
+de 2.500.000: todo ocurre mil veces mas rapido."
+
+Ver las ondas:
+
+   waves tb_game
+
+Otras pruebas:
+
+   python asm\pruebas\probar_asm.py
+      -> Pruebas aprobadas: 32/32
+
+   sim tb_periph
+      -> Pruebas aprobadas: 15/15
+
+   python asm\asm.py sw\prueba_cpu.s -o build\prueba_cpu.hex
+   sim tb_soc
+      -> display = 10 (las 16 pruebas del procesador)
+
+
+================================================================
+   6. SI LA PLACA NO HACE NADA
+================================================================
+
+Primero: el juego NO arranca solo. Despues de build debe verse 00
+en los dos displays. Apretar un boton y SOLTARLO: se encienden los
+4 LEDs. Si el boton se mantiene apretado, el juego espera a que se
+suelte.
+
+Si al soltar el boton no se enciende nada, grabar el ejemplo
+oficial del Pochoco para separar placa de juego:
+
+   probar buttons_leds
+
+   Cada boton debe encender su LED mientras se aprieta.
+
+   - Funciona: la placa y el SoC estan bien. Volver al juego con
+     build y avisar.
+   - Hay LEDs encendidos sin apretar nada: un boton esta pegado
+     o mal conectado.
+   - No pasa nada: problema de la placa o del SoC. Probar:
+
+   probar blink
+
+     (los 4 LEDs deben parpadear solos)
+
+Siempre volver al juego al final:
+
+   build
+
+Otros problemas:
+
+   "no se reconoce como un comando"  -> la terminal no es la de
+                                        start.bat (o es "make")
+   "Can't find iCE FTDI USB device"  -> reconectar el USB
+   "ERROR, linea N: ..."             -> error en game.s, en esa
+                                        linea. No se escribio
+                                        game.hex: corregir y
+                                        repetir
+   "Not enough words in the file"    -> aviso normal: el programa
+                                        ocupa menos que la RAM
+   "cd" no cambia de carpeta         -> falta el /d
+
+
+================================================================
+   7. RESPUESTAS RAPIDAS
+================================================================
+
+Que modificaron en el RTL?
+   Un contador de ciclos de 32 bits, solo lectura, en 0x8000_000C
+   (pochoco_periph.v) y game_top.v, que carga game.hex. El
+   procesador no se toco. La FPGA paso de 84% a 91%.
+
+Como sabe el SoC si un lw va a RAM o a perifericos?
+   Por el bit 31 de la direccion: 1 = periferico.
+
+Por que no reactivaron los shifts?
+   No caben: la FPGA esta al 91%. Desplazar 1 bit = sumar el
+   registro consigo mismo.
+
+Que pasa cuando el contador da la vuelta (cada 171,8 s)?
+   Nada: solo usamos diferencias (ahora - inicio) con resta sin
+   signo, que da bien aunque haya dado la vuelta.
+
+Cuanto error tiene la medicion?
+   El bucle que espera el boton tarda 14 ciclos (560 ns). Ademas
+   se trunca a la decima.
+
+Que pasa si aprieto dos botones?
+   Hay dos bits en 1, no es igual al LED objetivo: error.
+
+Como muestran un decimal si el display es hexadecimal?
+   Escribimos decenas*16 + unidades: 23 se manda como 0x23.
+   El *16 son cuatro sumas.
+
+Como calculan el promedio?
+   Suma / 10 restando de a 10. Si 2*resto >= 10, sube 1.
+
+Como eligen el LED?
+   semilla = semilla XOR contador en cada pulsacion, un LFSR de
+   32 bits avanza 8 pasos, y los bits 16 y 17 dan el indice de
+   la tabla 1, 2, 4, 8. Lo impredecible es el instante en que
+   aprieta la persona.
+
+Por que hay que apretar un boton para empezar?
+   Sin eso el programa haria siempre lo mismo y el primer LED
+   seria siempre igual.
+
+Para que usan la pila?
+   soltar_botones llama a esperar, y call sobrescribe ra. Se
+   guarda ra en la pila y se recupera al final.
+
+Como hacen el antirrebote?
+   Esperan que no haya botones y que sigan sueltos 20 ms.
+
+Por que el ensamblador tiene dos pasadas?
+   Un salto puede ir a una etiqueta que esta mas abajo. La
+   primera pasada anota direcciones; la segunda codifica.
+
+Que guarda un salto?
+   La distancia (destino - pc), no la direccion.
+
+Por que li a veces es una instruccion y a veces dos?
+   Si cabe en 12 bits con signo es un addi; si no, lui + addi.
+
+
+================================================================
+   8. DONDE ESTA CADA COSA
+================================================================
+
+   rtl\pochoco_periph.v     contador: lineas 49-70 y 107
+   rtl\game_top.v           top del proyecto
+   asm\asm.py               ensamblador
+   sw\game.s                el juego:
+      42-57    constantes
+      78       _start
+      88       esperar_inicio      pantalla de inicio
+      100      ronda               una ronda completa
+      125      esperar_boton       bucle de medicion
+      150      ronda_error         boton equivocado
+      160      fin_partida         promedio y pantalla final
+      185      esperar             espera de N ciclos
+      194      esperar_o_boton     espera que se corta con boton
+      212      soltar_botones      antirrebote (usa la pila)
+      229      mezclar_semilla     semilla XOR contador
+      243      elegir_objetivo     LFSR y tabla de LEDs
+      276      ciclos_a_decimas    division por 2.500.000
+      295      promedio            division por 10 con redondeo
+      314      mostrar_decimas     decenas*16 + unidades
+      334      mascaras            tabla .word 1, 2, 4, 8
+   tb\tb_game.v             simulacion del juego (28 pruebas)
+
+================================================================

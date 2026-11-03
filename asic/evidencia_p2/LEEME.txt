@@ -1,0 +1,43 @@
+Evidencia de la seccion 3.1: el RTL del Proyecto 2 (commit 45f33d8, tal
+como se entrego) pasado por LibreLane, para ver que mensaje delata cada
+construccion propia de la FPGA.
+
+  rtl/        copia sin cambios de rtl/ del Proyecto 2
+
+Todo se corre desde la raiz del repositorio, dentro de nix-shell.
+
+------------------------------------------------------------------
+Paso 1: el RTL tal cual. Se detiene en el lint (Verilator).
+------------------------------------------------------------------
+  librelane --pdk gf180mcuD --run-tag p2_paso1 asic/evidencia_p2/config_paso1.json
+
+  grep -n "MODMISSING" asic/evidencia_p2/runs/p2_paso1/*-verilator-lint/*.log
+  -> %Error-MODMISSING: .../espino_register_file.v:22:3: Cannot find file
+     containing module: 'SB_RAM40_4K'
+
+------------------------------------------------------------------
+Paso 2: igual, pero con el register file de flip-flops del ASIC
+(asic/espino_register_file.v), para llegar a la sintesis. Se detiene
+despues de Yosys (--to): con la memoria del Proyecto 2 el diseno pasa de
+~0,14 mm2 a ~2,4 mm2 de celdas y no tiene sentido rutearlo.
+------------------------------------------------------------------
+  librelane --pdk gf180mcuD --run-tag p2_paso2 --to Yosys.Synthesis asic/evidencia_p2/config_paso2.json
+
+  grep -n "PROCASSINIT" asic/evidencia_p2/runs/p2_paso2/*-verilator-lint/*.log
+  -> %Warning-PROCASSINIT: .../pochoco_soc.v:35:24: Procedural assignment to
+     declaration with initial value: 'por_cnt'
+
+  grep -n "readmem\|Mapping memory\|Set init value" asic/evidencia_p2/runs/p2_paso2/*-yosys-synthesis/*.log
+  -> Yosys lee sw/game.hex (la ruta es relativa a la carpeta desde donde se
+     corre LibreLane), "Mapping memory \u_pochoco.u_ram.mem": convierte la
+     memoria de 512 palabras en flip-flops, y "Set init value: \por_cnt".
+     NO hay error ni warning: es el caso "no produjo mensaje" del enunciado.
+     Los valores iniciales quedan como atributo init de los flip-flops, que
+     las celdas de GF180 no implementan: en silicio el programa y el reset
+     de encendido se pierden.
+
+  grep -A3 "Chip area" asic/evidencia_p2/runs/p2_paso2/*-yosys-synthesis/reports/stat.rpt
+  -> el area de celdas, dominada por la memoria de flip-flops.
+
+Para cada mensaje, anotar en el informe el archivo de log y el numero de
+linea que muestra grep -n.

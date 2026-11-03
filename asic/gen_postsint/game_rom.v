@@ -1,0 +1,192 @@
+// game_rom.v
+// GENERADO por asm/asm.py desde sw/game.s. No editar a mano: se regenera
+// con el ensamblador. Constantes redefinidas: -D FRECUENCIA=10000000 -D CICLOS_DECIMA=1 -D RONDAS=2
+//
+// ROM combinacional de instrucciones (estrategia 1 del Proyecto 3).
+// 172 palabras usadas de 256 (direcciones 0x000 a 0x2ac).
+// Una direccion fuera del programa devuelve 0 (instruccion ilegal).
+// Yosys convierte el case en logica combinacional: no hay memoria ni
+// flip-flops aqui. El registro de salida esta en pochoco_mem.
+
+module game_rom (
+  input  wire [7:0]  addr_i,   // direccion de palabra = direccion de byte [9:2]
+  output reg  [31:0] data_o
+);
+  always @* begin
+    case (addr_i)
+      8'd0  : data_o = 32'h00000137;  // 0x000  li   sp, fin_programa + 4 * PILA_PALABRAS
+      8'd1  : data_o = 32'h2b410113;  // 0x004  li   sp, fin_programa + 4 * PILA_PALABRAS
+      8'd2  : data_o = 32'h80000437;  // 0x008  li   s0, PERIF
+      8'd3  : data_o = 32'h00100193;  // 0x00c  li   gp, 1
+      8'd4  : data_o = 32'h00042223;  // 0x010  sw   zero, LEDS(s0)
+      8'd5  : data_o = 32'h00042023;  // 0x014  sw   zero, DISPLAY(s0)
+      8'd6  : data_o = 32'h00842283;  // 0x018  lw   t0, BOTONES(s0)
+      8'd7  : data_o = 32'hfe028ee3;  // 0x01c  beqz t0, esperar_inicio
+      8'd8  : data_o = 32'h00000097;  // 0x020  call mezclar_semilla
+      8'd9  : data_o = 32'h190080e7;  // 0x024  call mezclar_semilla
+      8'd10 : data_o = 32'h00000097;  // 0x028  call soltar_botones
+      8'd11 : data_o = 32'h158080e7;  // 0x02c  call soltar_botones
+      8'd12 : data_o = 32'h00000493;  // 0x030  li   s1, 0
+      8'd13 : data_o = 32'h00000213;  // 0x034  li   tp, 0
+      8'd14 : data_o = 32'h00042023;  // 0x038  sw   zero, DISPLAY(s0)
+      8'd15 : data_o = 32'h00f00293;  // 0x03c  li   t0, 0b1111
+      8'd16 : data_o = 32'h00542223;  // 0x040  sw   t0, LEDS(s0)
+      8'd17 : data_o = 32'h01e00513;  // 0x044  li   a0, CICLOS_INICIO
+      8'd18 : data_o = 32'h00000097;  // 0x048  call esperar
+      8'd19 : data_o = 32'h0fc080e7;  // 0x04c  call esperar
+      8'd20 : data_o = 32'h00000097;  // 0x050  call soltar_botones
+      8'd21 : data_o = 32'h130080e7;  // 0x054  call soltar_botones
+      8'd22 : data_o = 32'h00000097;  // 0x058  call elegir_objetivo
+      8'd23 : data_o = 32'h16c080e7;  // 0x05c  call elegir_objetivo
+      8'd24 : data_o = 32'h00050593;  // 0x060  mv   a1, a0
+      8'd25 : data_o = 32'h00b42223;  // 0x064  sw   a1, LEDS(s0)
+      8'd26 : data_o = 32'h00c42603;  // 0x068  lw   a2, CONTADOR(s0)
+      8'd27 : data_o = 32'h06300693;  // 0x06c  li   a3, CICLOS_TOPE
+      8'd28 : data_o = 32'h00c42303;  // 0x070  lw   t1, CONTADOR(s0)
+      8'd29 : data_o = 32'h40c303b3;  // 0x074  sub  t2, t1, a2
+      8'd30 : data_o = 32'h00d3e463;  // 0x078  bltu t2, a3, leer_botones
+      8'd31 : data_o = 32'h40d30633;  // 0x07c  sub  a2, t1, a3
+      8'd32 : data_o = 32'h00842283;  // 0x080  lw   t0, BOTONES(s0)
+      8'd33 : data_o = 32'hfe0286e3;  // 0x084  beqz t0, esperar_boton
+      8'd34 : data_o = 32'h00028713;  // 0x088  mv   a4, t0
+      8'd35 : data_o = 32'h00038793;  // 0x08c  mv   a5, t2
+      8'd36 : data_o = 32'h00000097;  // 0x090  call mezclar_semilla
+      8'd37 : data_o = 32'h120080e7;  // 0x094  call mezclar_semilla
+      8'd38 : data_o = 32'h02b71a63;  // 0x098  bne  a4, a1, ronda_error
+      8'd39 : data_o = 32'h00078513;  // 0x09c  mv   a0, a5
+      8'd40 : data_o = 32'h00000097;  // 0x0a0  call ciclos_a_decimas
+      8'd41 : data_o = 32'h184080e7;  // 0x0a4  call ciclos_a_decimas
+      8'd42 : data_o = 32'h00a20233;  // 0x0a8  add  tp, tp, a0
+      8'd43 : data_o = 32'h00000097;  // 0x0ac  call mostrar_decimas
+      8'd44 : data_o = 32'h1d0080e7;  // 0x0b0  call mostrar_decimas
+      8'd45 : data_o = 32'h00148493;  // 0x0b4  addi s1, s1, 1
+      8'd46 : data_o = 32'h00000097;  // 0x0b8  call soltar_botones
+      8'd47 : data_o = 32'h0c8080e7;  // 0x0bc  call soltar_botones
+      8'd48 : data_o = 32'h00200293;  // 0x0c0  li   t0, RONDAS
+      8'd49 : data_o = 32'hf654cce3;  // 0x0c4  blt  s1, t0, ronda
+      8'd50 : data_o = 32'h0280006f;  // 0x0c8  j    fin_partida
+      8'd51 : data_o = 32'h0ee00293;  // 0x0cc  li   t0, ERROR_EE
+      8'd52 : data_o = 32'h00542023;  // 0x0d0  sw   t0, DISPLAY(s0)
+      8'd53 : data_o = 32'h00042223;  // 0x0d4  sw   zero, LEDS(s0)
+      8'd54 : data_o = 32'h00000097;  // 0x0d8  call soltar_botones
+      8'd55 : data_o = 32'h0a8080e7;  // 0x0dc  call soltar_botones
+      8'd56 : data_o = 32'h00a00513;  // 0x0e0  li   a0, CICLOS_ERROR
+      8'd57 : data_o = 32'h00000097;  // 0x0e4  call esperar
+      8'd58 : data_o = 32'h060080e7;  // 0x0e8  call esperar
+      8'd59 : data_o = 32'hf51ff06f;  // 0x0ec  j    ronda
+      8'd60 : data_o = 32'h00042223;  // 0x0f0  sw   zero, LEDS(s0)
+      8'd61 : data_o = 32'h01400513;  // 0x0f4  li   a0, CICLOS_FINAL
+      8'd62 : data_o = 32'h00000097;  // 0x0f8  call esperar
+      8'd63 : data_o = 32'h04c080e7;  // 0x0fc  call esperar
+      8'd64 : data_o = 32'h00020513;  // 0x100  mv   a0, tp
+      8'd65 : data_o = 32'h00000097;  // 0x104  call promedio
+      8'd66 : data_o = 32'h14c080e7;  // 0x108  call promedio
+      8'd67 : data_o = 32'h00000097;  // 0x10c  call mostrar_decimas
+      8'd68 : data_o = 32'h170080e7;  // 0x110  call mostrar_decimas
+      8'd69 : data_o = 32'h00900713;  // 0x114  li   a4, 0b1001
+      8'd70 : data_o = 32'h00e42223;  // 0x118  sw   a4, LEDS(s0)
+      8'd71 : data_o = 32'h00f74713;  // 0x11c  xori a4, a4, 0b1111
+      8'd72 : data_o = 32'h00500513;  // 0x120  li   a0, CICLOS_PARPADEO
+      8'd73 : data_o = 32'h00000097;  // 0x124  call esperar_o_boton
+      8'd74 : data_o = 32'h034080e7;  // 0x128  call esperar_o_boton
+      8'd75 : data_o = 32'hfe0506e3;  // 0x12c  beqz a0, parpadeo_final
+      8'd76 : data_o = 32'h00000097;  // 0x130  call mezclar_semilla
+      8'd77 : data_o = 32'h080080e7;  // 0x134  call mezclar_semilla
+      8'd78 : data_o = 32'h00000097;  // 0x138  call soltar_botones
+      8'd79 : data_o = 32'h048080e7;  // 0x13c  call soltar_botones
+      8'd80 : data_o = 32'hef1ff06f;  // 0x140  j    nueva_partida
+      8'd81 : data_o = 32'h00c42283;  // 0x144  lw   t0, CONTADOR(s0)
+      8'd82 : data_o = 32'h00c42303;  // 0x148  lw   t1, CONTADOR(s0)
+      8'd83 : data_o = 32'h40530333;  // 0x14c  sub  t1, t1, t0
+      8'd84 : data_o = 32'hfea36ce3;  // 0x150  bltu t1, a0, esp_1
+      8'd85 : data_o = 32'h00008067;  // 0x154  ret
+      8'd86 : data_o = 32'h00c42283;  // 0x158  lw   t0, CONTADOR(s0)
+      8'd87 : data_o = 32'h00842303;  // 0x15c  lw   t1, BOTONES(s0)
+      8'd88 : data_o = 32'h00031c63;  // 0x160  bnez t1, eob_2
+      8'd89 : data_o = 32'h00c42303;  // 0x164  lw   t1, CONTADOR(s0)
+      8'd90 : data_o = 32'h40530333;  // 0x168  sub  t1, t1, t0
+      8'd91 : data_o = 32'hfea368e3;  // 0x16c  bltu t1, a0, eob_1
+      8'd92 : data_o = 32'h00000513;  // 0x170  li   a0, 0
+      8'd93 : data_o = 32'h00008067;  // 0x174  ret
+      8'd94 : data_o = 32'h00030513;  // 0x178  mv   a0, t1
+      8'd95 : data_o = 32'h00008067;  // 0x17c  ret
+      8'd96 : data_o = 32'hffc10113;  // 0x180  addi sp, sp, -4
+      8'd97 : data_o = 32'h00112023;  // 0x184  sw   ra, 0(sp)
+      8'd98 : data_o = 32'h00842283;  // 0x188  lw   t0, BOTONES(s0)
+      8'd99 : data_o = 32'hfe029ee3;  // 0x18c  bnez t0, sol_1
+      8'd100: data_o = 32'h00000513;  // 0x190  li   a0, CICLOS_REBOTE
+      8'd101: data_o = 32'h00000097;  // 0x194  call esperar
+      8'd102: data_o = 32'hfb0080e7;  // 0x198  call esperar
+      8'd103: data_o = 32'h00842283;  // 0x19c  lw   t0, BOTONES(s0)
+      8'd104: data_o = 32'hfe0294e3;  // 0x1a0  bnez t0, sol_1
+      8'd105: data_o = 32'h00012083;  // 0x1a4  lw   ra, 0(sp)
+      8'd106: data_o = 32'h00410113;  // 0x1a8  addi sp, sp, 4
+      8'd107: data_o = 32'h00008067;  // 0x1ac  ret
+      8'd108: data_o = 32'h00c42283;  // 0x1b0  lw   t0, CONTADOR(s0)
+      8'd109: data_o = 32'h0051c1b3;  // 0x1b4  xor  gp, gp, t0
+      8'd110: data_o = 32'h00019463;  // 0x1b8  bnez gp, mez_1
+      8'd111: data_o = 32'h00100193;  // 0x1bc  li   gp, 1
+      8'd112: data_o = 32'h00008067;  // 0x1c0  ret
+      8'd113: data_o = 32'h00800393;  // 0x1c4  li   t2, 8
+      8'd114: data_o = 32'h00400337;  // 0x1c8  li   t1, POLINOMIO
+      8'd115: data_o = 32'h00730313;  // 0x1cc  li   t1, POLINOMIO
+      8'd116: data_o = 32'h0001d863;  // 0x1d0  bgez gp, eo_2
+      8'd117: data_o = 32'h003181b3;  // 0x1d4  add  gp, gp, gp
+      8'd118: data_o = 32'h0061c1b3;  // 0x1d8  xor  gp, gp, t1
+      8'd119: data_o = 32'h0080006f;  // 0x1dc  j    eo_3
+      8'd120: data_o = 32'h003181b3;  // 0x1e0  add  gp, gp, gp
+      8'd121: data_o = 32'hfff38393;  // 0x1e4  addi t2, t2, -1
+      8'd122: data_o = 32'hfe0394e3;  // 0x1e8  bnez t2, eo_1
+      8'd123: data_o = 32'h00010337;  // 0x1ec  li   t1, 0x10000
+      8'd124: data_o = 32'h0061f2b3;  // 0x1f0  and  t0, gp, t1
+      8'd125: data_o = 32'h005032b3;  // 0x1f4  snez t0, t0
+      8'd126: data_o = 32'h00630333;  // 0x1f8  add  t1, t1, t1
+      8'd127: data_o = 32'h0061f3b3;  // 0x1fc  and  t2, gp, t1
+      8'd128: data_o = 32'h007033b3;  // 0x200  snez t2, t2
+      8'd129: data_o = 32'h007383b3;  // 0x204  add  t2, t2, t2
+      8'd130: data_o = 32'h007282b3;  // 0x208  add  t0, t0, t2
+      8'd131: data_o = 32'h00100513;  // 0x20c  li   a0, 1
+      8'd132: data_o = 32'h00028863;  // 0x210  beqz t0, eo_5
+      8'd133: data_o = 32'h00a50533;  // 0x214  add  a0, a0, a0
+      8'd134: data_o = 32'hfff28293;  // 0x218  addi t0, t0, -1
+      8'd135: data_o = 32'hff5ff06f;  // 0x21c  j    eo_4
+      8'd136: data_o = 32'h00008067;  // 0x220  ret
+      8'd137: data_o = 32'h00000293;  // 0x224  li   t0, 0
+      8'd138: data_o = 32'h00100313;  // 0x228  li   t1, CICLOS_DECIMA
+      8'd139: data_o = 32'h00656863;  // 0x22c  bltu a0, t1, cad_2
+      8'd140: data_o = 32'h40650533;  // 0x230  sub  a0, a0, t1
+      8'd141: data_o = 32'h00128293;  // 0x234  addi t0, t0, 1
+      8'd142: data_o = 32'hff5ff06f;  // 0x238  j    cad_1
+      8'd143: data_o = 32'h06300313;  // 0x23c  li   t1, DECIMAS_TOPE
+      8'd144: data_o = 32'h00537463;  // 0x240  bleu t0, t1, cad_3
+      8'd145: data_o = 32'h00030293;  // 0x244  mv   t0, t1
+      8'd146: data_o = 32'h00028513;  // 0x248  mv   a0, t0
+      8'd147: data_o = 32'h00008067;  // 0x24c  ret
+      8'd148: data_o = 32'h00000293;  // 0x250  li   t0, 0
+      8'd149: data_o = 32'h00200313;  // 0x254  li   t1, RONDAS
+      8'd150: data_o = 32'h00656863;  // 0x258  bltu a0, t1, pro_2
+      8'd151: data_o = 32'h40650533;  // 0x25c  sub  a0, a0, t1
+      8'd152: data_o = 32'h00128293;  // 0x260  addi t0, t0, 1
+      8'd153: data_o = 32'hff5ff06f;  // 0x264  j    pro_1
+      8'd154: data_o = 32'h00a50533;  // 0x268  add  a0, a0, a0
+      8'd155: data_o = 32'h00656463;  // 0x26c  bltu a0, t1, pro_3
+      8'd156: data_o = 32'h00128293;  // 0x270  addi t0, t0, 1
+      8'd157: data_o = 32'h00028513;  // 0x274  mv   a0, t0
+      8'd158: data_o = 32'h00008067;  // 0x278  ret
+      8'd159: data_o = 32'h00000293;  // 0x27c  li   t0, 0
+      8'd160: data_o = 32'h00a00313;  // 0x280  li   t1, 10
+      8'd161: data_o = 32'h00656863;  // 0x284  bltu a0, t1, md_2
+      8'd162: data_o = 32'h40650533;  // 0x288  sub  a0, a0, t1
+      8'd163: data_o = 32'h00128293;  // 0x28c  addi t0, t0, 1
+      8'd164: data_o = 32'hff5ff06f;  // 0x290  j    md_1
+      8'd165: data_o = 32'h005282b3;  // 0x294  add  t0, t0, t0
+      8'd166: data_o = 32'h005282b3;  // 0x298  add  t0, t0, t0
+      8'd167: data_o = 32'h005282b3;  // 0x29c  add  t0, t0, t0
+      8'd168: data_o = 32'h005282b3;  // 0x2a0  add  t0, t0, t0
+      8'd169: data_o = 32'h00a2e2b3;  // 0x2a4  or   t0, t0, a0
+      8'd170: data_o = 32'h00542023;  // 0x2a8  sw   t0, DISPLAY(s0)
+      8'd171: data_o = 32'h00008067;  // 0x2ac  ret
+      default: data_o = 32'h00000000;
+    endcase
+  end
+endmodule

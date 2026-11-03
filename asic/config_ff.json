@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "version": 2,
+    "flow": "Classic"
+  },
+  "DESIGN_NAME": "asic_top",
+  "CLOCK_PORT": "clk",
+  "CLOCK_PERIOD": 100,
+  "FP_CORE_UTIL": 40,
+  "IO_PIN_ORDER_CFG": "dir::pin_order.cfg",
+  "ERRORS_ON_UNMATCHED_IO": "both",
+  "SYNTH_KEEP_HIERARCHY_MODULES": [
+    "espino_register_file",
+    "espino_alu",
+    "pochoco_cycle_counter"
+  ],
+  "VERILOG_FILES": [
+    "dir::../rtl/pochoco_soc.v",
+    "dir::../rtl/pochoco_periph.v",
+    "dir::../rtl/pochoco_cycle_counter.v",
+    "dir::../rtl/pochoco_spi_slave.v",
+    "dir::../rtl/espino_core/espino_alu.v",
+    "dir::../rtl/espino_core/espino_controller.v",
+    "dir::../rtl/espino_core/espino_core.v",
+    "dir::../rtl/espino_core/espino_decoder.v",
+    "dir::../rtl/espino_core/espino_id_stage.v",
+    "dir::../rtl/espino_core/espino_if_stage.v",
+    "dir::../rtl/espino_core/espino_load_store_unit.v",
+    "dir::asic_top.v",
+    "dir::espino_register_file.v",
+    "dir::pochoco_mem_ff.v"
+  ],
+  "VERILOG_INCLUDE_DIRS": [
+    "dir::gen"
+  ]
+}
