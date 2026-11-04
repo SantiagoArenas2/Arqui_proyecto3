@@ -1,0 +1,98 @@
+== Corrida ff  (terminada: si)
+   CLOCK_PERIOD = 100 ns   FP_CORE_UTIL = 40 %
+   die = 2455570 um2   core = 2385420 um2   celdas = 1272700 um2   utilizacion = 0.5335
+
+-- Timing por corner (ns)      setup WNS   setup TNS    hold WNS    hold TNS
+   nom_tt_025C_5v00                55.232       0.000       0.469       0.000
+   nom_ss_125C_4v50                18.775       0.000       1.112       0.000
+   nom_ff_n40C_5v50                71.549       0.000       0.189       0.000
+   min_tt_025C_5v00                57.234       0.000       0.463       0.000
+   min_ss_125C_4v50                22.243       0.000       1.102       0.000
+   min_ff_n40C_5v50                72.879       0.000       0.186       0.000
+   max_tt_025C_5v00                52.809       0.000       0.475       0.000
+   max_ss_125C_4v50                14.643       0.000       1.123       0.000
+   max_ff_n40C_5v50                69.918       0.000       0.193       0.000
+   cierra timing en todos los corners: si
+
+-- Sintesis: 31427 celdas, 6575 flip-flops
+   Las 5 celdas mas usadas:
+       6223  gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+       5262  gf180mcu_fd_sc_mcu7t5v0__nor2_1
+       4929  gf180mcu_fd_sc_mcu7t5v0__aoi22_1
+       4366  gf180mcu_fd_sc_mcu7t5v0__dffrnq_1
+       2093  gf180mcu_fd_sc_mcu7t5v0__nand2_1
+   Area por modulo (jerarquia conservada con SYNTH_KEEP_HIERARCHY_MODULES):
+         866344.5 um2   90.8 %  asic_top (resto del diseno, aplanado)
+          74085.8 um2    7.8 %  espino_register_file
+          10005.7 um2    1.0 %  espino_alu
+           3942.6 um2    0.4 %  pochoco_cycle_counter
+         954378.6 um2  100.0 %  total del diseno
+
+-- Ruta critica de setup (max_ss_125C_4v50)
+   inicio: _51258_ (rising edge-triggered flip-flop clocked by clk)
+   fin:    _50893_ (rising edge-triggered flip-flop clocked by clk)
+   llegada 89.130043 ns, slack 14.643263 ns, 52 celdas
+     clkbuf_16    clkbuf_0_clk
+     clkbuf_8     clkbuf_2_3_0_clk
+     clkbuf_8     clkbuf_3_7_0_clk
+     clkbuf_8     clkbuf_6_60_0_clk
+     clkbuf_8     clkbuf_leaf_222_clk
+     dffrnq_1     _51258_
+     clkinv_1     _22656_
+     nor2_1       _22767_
+     nand4_1      _22768_
+     nor2_1       _22770_
+     clkinv_1     _22771_
+     oai21_1      _22852_
+     dlyb_1       fanout3780
+     dlyb_1       fanout3779
+     nor2_1       _22863_
+     buf_2        max_cap3227
+     nand2_1      _22876_
+     dlyb_1       fanout3101
+     dlyb_1       fanout3100
+     nand2_1      _22880_
+     xor2_1       u_pochoco.u_core.u_id.u_alu/_0670_
+     nand2_1      u_pochoco.u_core.u_id.u_alu/_0948_
+     nor3_1       u_pochoco.u_core.u_id.u_alu/_0965_
+     and2_1       u_pochoco.u_core.u_id.u_alu/_0966_
+     aoi221_1     u_pochoco.u_core.u_id.u_alu/_0971_
+     oai31_1      u_pochoco.u_core.u_id.u_alu/_0972_
+     clkbuf_1     u_pochoco.u_core.u_id.u_alu/wire2940
+     clkbuf_1     u_pochoco.u_core.u_id.u_alu/max_cap2939
+     aoi211_1     u_pochoco.u_core.u_id.u_alu/_1057_
+     clkbuf_1     u_pochoco.u_core.u_id.u_alu/max_cap2936
+     oai31_1      u_pochoco.u_core.u_id.u_alu/_1093_
+     clkbuf_1     u_pochoco.u_core.u_id.u_alu/wire2494
+     aoi221_1     u_pochoco.u_core.u_id.u_alu/_1110_
+     oai21_1      u_pochoco.u_core.u_id.u_alu/_1118_
+     xor2_1       u_pochoco.u_core.u_id.u_alu/_1119_
+     oai21_1      u_pochoco.u_core.u_id.u_alu/_1126_
+     clkinv_1     _22651_
+     nand3_1      _23764_
+     dlyb_1       fanout1573
+     or2_1        _23765_
+     buf_4        max_cap1527
+     nor3_1       _33856_
+     dlyb_1       fanout1454
+     dlyb_1       fanout1451
+     dlyb_1       fanout1450
+     nand2_1      _34101_
+     nor2_1       _34136_
+     dlyb_1       fanout331
+     dlyb_1       fanout330
+     nor2_1       _34151_
+     aoi21_1      _34152_
+     dffsnq_1     _50893_
+   (reporte completo: asic/runs/ff/55-openroad-stapostpnr/max_ss_125C_4v50/max.rpt)
+
+-- Signoff
+   drc_magic      0
+   drc_klayout    -
+   drc_ruteo      0
+   lvs_errores    0
+   antena_redes   0
+   antena_pines   0
+   max_slew       28428
+   max_cap        348
+   corrida cerrada (criterios del enunciado): si

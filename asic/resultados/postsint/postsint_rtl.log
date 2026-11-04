@@ -1,0 +1,13 @@
+ciclo    0  LEDs 0000  display 00
+ciclo  110  LEDs 1111  display 00
+ciclo  327  LEDs 0001  display 00
+ciclo  611  LEDs 0001  display 19
+ciclo  672  LEDs 1111  display 19
+ciclo  889  LEDs 0001  display 19
+ciclo  934  LEDs 0001  display ee
+ciclo  936  LEDs 0000  display ee
+ciclo 1018  LEDs 1111  display ee
+ciclo 1262  LEDs 1000  display ee
+ciclo 1704  LEDs 1000  display 33
+ciclo 1765  LEDs 0000  display 33
+ciclo 2109  LEDs 0000  display 26

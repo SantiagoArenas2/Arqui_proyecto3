@@ -1,0 +1,14 @@
+┏━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
+┃ P / R ┃ Partial ┃ Required ┃ Net                           ┃ Pin                               ┃ Layer  ┃
+┡━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩
+│ 1.85  │ 740.77  │ 400.00   │ net9                          │ output9/I                         │ Metal2 │
+│ 1.74  │ 694.70  │ 400.00   │ rst_sync_n                    │ fanout630/I                       │ Metal2 │
+│ 1.57  │ 629.56  │ 400.00   │ net10                         │ output10/I                        │ Metal2 │
+│ 1.34  │ 534.59  │ 400.00   │ u_pochoco.u_core.u_rf/net252  │ u_pochoco.u_core.u_rf/fanout249/I │ Metal2 │
+│ 1.29  │ 514.32  │ 400.00   │ u_pochoco.u_core.rf_wdata[0\] │ u_pochoco.u_core.u_rf/fanout86/I  │ Metal2 │
+│ 1.28  │ 513.21  │ 400.00   │ net11                         │ output11/I                        │ Metal2 │
+│ 1.16  │ 464.21  │ 400.00   │ u_pochoco.u_core.u_rf/_0629_  │ u_pochoco.u_core.u_rf/_1863_/A1   │ Metal2 │
+│ 1.11  │ 444.48  │ 400.00   │ net460                        │ u_pochoco.u_core.u_rf/fanout459/I │ Metal2 │
+│ 1.05  │ 420.32  │ 400.00   │ net457                        │ u_pochoco.u_core.u_rf/fanout456/I │ Metal2 │
+│ 1.04  │ 414.44  │ 400.00   │ u_pochoco.u_core.u_rf/_1401_  │ u_pochoco.u_core.u_rf/fanout171/I │ Metal4 │
+└───────┴─────────┴──────────┴───────────────────────────────┴───────────────────────────────────┴────────┘

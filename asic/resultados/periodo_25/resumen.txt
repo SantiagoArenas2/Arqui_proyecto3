@@ -1,0 +1,62 @@
+== Corrida periodo_25  (terminada: si)
+   CLOCK_PERIOD = 25 ns   FP_CORE_UTIL = 40 %
+   die = 387034 um2   core = 359712 um2   celdas = 185062 um2   utilizacion = 0.5145
+
+-- Timing por corner (ns)      setup WNS   setup TNS    hold WNS    hold TNS
+   nom_tt_025C_5v00                 7.253       0.000       0.399       0.000
+   nom_ss_125C_4v50                -6.889   -3407.193       0.979       0.000
+   nom_ff_n40C_5v50                13.624       0.000       0.151       0.000
+   min_tt_025C_5v00                 8.034       0.000       0.392       0.000
+   min_ss_125C_4v50                -5.564   -2673.260       0.966       0.000
+   min_ff_n40C_5v50                14.147       0.000       0.146       0.000
+   max_tt_025C_5v00                 6.321       0.000       0.408       0.000
+   max_ss_125C_4v50                -8.490   -4288.799       0.993       0.000
+   max_ff_n40C_5v50                12.996       0.000       0.157       0.000
+   cierra timing en todos los corners: no
+
+-- Sintesis: 5073 celdas, 846 flip-flops
+   Las 5 celdas mas usadas:
+        681  gf180mcu_fd_sc_mcu7t5v0__nand2_1
+        653  gf180mcu_fd_sc_mcu7t5v0__mux2_2
+        512  gf180mcu_fd_sc_mcu7t5v0__dffq_1
+        442  gf180mcu_fd_sc_mcu7t5v0__nor2_1
+        391  gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+   Area por modulo (jerarquia conservada con SYNTH_KEEP_HIERARCHY_MODULES):
+          74085.8 um2   51.5 %  espino_register_file
+          55863.4 um2   38.8 %  asic_top (resto del diseno, aplanado)
+          10005.7 um2    7.0 %  espino_alu
+           3942.6 um2    2.7 %  pochoco_cycle_counter
+         143897.6 um2  100.0 %  total del diseno
+
+-- Ruta critica de setup (max_ss_125C_4v50)
+   inicio: _4414_ (rising edge-triggered flip-flop clocked by clk)
+   fin:    u_pochoco.u_core.u_rf/_3334_
+   llegada 35.170395 ns, slack -8.490071 ns, 16 celdas
+     clkbuf_16    clkbuf_0_clk
+     clkbuf_16    clkbuf_3_4__f_clk
+     clkbuf_8     clkbuf_leaf_47_clk
+     dffrnq_1     _4414_
+     dlyb_1       fanout527
+     dlya_1       fanout522
+     dlyb_1       u_pochoco.u_core.u_rf/fanout520
+     clkinv_1     u_pochoco.u_core.u_rf/_1426_
+     dlyb_1       u_pochoco.u_core.u_rf/fanout421
+     nor2_1       u_pochoco.u_core.u_rf/_1499_
+     dlyb_1       u_pochoco.u_core.u_rf/fanout381
+     dlyb_1       u_pochoco.u_core.u_rf/fanout380
+     aoi222_1     u_pochoco.u_core.u_rf/_1651_
+     oai21_1      u_pochoco.u_core.u_rf/_1652_
+     and2_1       u_pochoco.u_core.u_rf/_1653_
+     dffrnq_1     u_pochoco.u_core.u_rf/_3334_
+   (reporte completo: asic/runs/periodo_25/55-openroad-stapostpnr/max_ss_125C_4v50/max.rpt)
+
+-- Signoff
+   drc_magic      0
+   drc_klayout    -
+   drc_ruteo      0
+   lvs_errores    0
+   antena_redes   0
+   antena_pines   0
+   max_slew       2293
+   max_cap        4
+   corrida cerrada (criterios del enunciado): no: timing

@@ -1,0 +1,20 @@
+┏━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
+┃ P / R ┃ Partial ┃ Required ┃ Net                            ┃ Pin                               ┃ Layer  ┃
+┡━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩
+│ 2.49  │ 995.84  │ 400.00   │ net636                         │ fanout619/I                       │ Metal2 │
+│ 1.91  │ 764.95  │ 400.00   │ u_pochoco.u_core.u_rf/_1406_   │ u_pochoco.u_core.u_rf/fanout187/I │ Metal2 │
+│ 1.78  │ 713.78  │ 400.00   │ u_pochoco.u_core.u_rf/_1393_   │ u_pochoco.u_core.u_rf/fanout230/I │ Metal3 │
+│ 1.78  │ 712.25  │ 400.00   │ u_pochoco.u_core.u_rf/_1404_   │ u_pochoco.u_core.u_rf/fanout157/I │ Metal4 │
+│ 1.78  │ 712.25  │ 400.00   │ u_pochoco.u_core.u_rf/net208   │ u_pochoco.u_core.u_rf/fanout201/I │ Metal4 │
+│ 1.74  │ 696.23  │ 400.00   │ net528                         │ fanout527/I                       │ Metal2 │
+│ 1.44  │ 576.33  │ 400.00   │ u_pochoco.u_core.u_rf/_1393_   │ u_pochoco.u_core.u_rf/fanout227/I │ Metal3 │
+│ 1.35  │ 540.17  │ 400.00   │ _1103_                         │ fanout143/I                       │ Metal2 │
+│ 1.35  │ 538.64  │ 400.00   │ u_pochoco.instr_rdata[15\]     │ fanout575/I                       │ Metal2 │
+│ 1.33  │ 530.51  │ 400.00   │ u_pochoco.instr_rdata[20\]     │ u_pochoco.u_core.u_rf/fanout517/I │ Metal3 │
+│ 1.29  │ 517.53  │ 400.00   │ u_pochoco.u_core.u_rf/net214   │ u_pochoco.u_core.u_rf/fanout211/I │ Metal2 │
+│ 1.17  │ 469.92  │ 400.00   │ net502                         │ u_pochoco.u_core.u_rf/fanout498/I │ Metal2 │
+│ 1.07  │ 428.71  │ 400.00   │ u_pochoco.u_core.lsu_addr[21\] │ _2958_/A2                         │ Metal2 │
+│ 1.04  │ 415.96  │ 400.00   │ u_pochoco.u_core.u_rf/_1405_   │ u_pochoco.u_core.u_rf/fanout194/I │ Metal3 │
+│ 1.04  │ 414.30  │ 400.00   │ net470                         │ fanout468/I                       │ Metal4 │
+│ 1.04  │ 414.30  │ 400.00   │ net470                         │ fanout469/I                       │ Metal4 │
+└───────┴─────────┴──────────┴────────────────────────────────┴───────────────────────────────────┴────────┘

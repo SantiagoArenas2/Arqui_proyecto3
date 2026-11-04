@@ -1,0 +1,19 @@
+Fecha: 2026-11-04T04:21:25-03:00
+Sistema: Linux 6.18.54.1-microsoft-standard-WSL2 x86_64
+
+LibreLane:  Included tools and utilities may be distributed under stricter licenses.
+  commit:   3.0.17 64ef80802d3d189b476636d2a6b17888c03304ee
+PDK:         gf180mcuD
+PDK_ROOT:    /home/carol_pinto/.ciel/ciel/gf180mcu/versions/54435919abffb937387ec956209f9cf5fd2dfbee
+  revision:  54435919abffb937387ec956209f9cf5fd2dfbee
+Biblioteca:  gf180mcu_fd_sc_mcu7t5v0
+CLOCK_PERIOD 100 ns, FP_CORE_UTIL 40 %
+
+Yosys:      Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, clang++ 21.1.2 -fPIC -O3)
+OpenROAD:   dcf36133a369abc8f3c5e5738cd4d82e4903c0e0 
+Magic:      8.3.623
+Netgen:     Netgen 1.5.316 compiled on Wed Nov  4 06:17:35 UTC 2026
+KLayout:    KLayout 0.30.7
+Verilator:  Verilator 5.044 2026-01-01 rev v5.040
+Icarus:     Icarus Verilog version 13.0 (devel) ()
+Python:     Python 3.13.9

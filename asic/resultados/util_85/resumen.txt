@@ -1,0 +1,34 @@
+== Corrida util_85  (terminada: no)
+   CLOCK_PERIOD = 100 ns   FP_CORE_UTIL = 85 %
+   die = 188146 um2   core = 167573 um2   celdas = 149473 um2   utilizacion = 0.8920
+
+-- Timing por corner (ns)      setup WNS   setup TNS    hold WNS    hold TNS
+   nom_tt_025C_5v00                53.518       0.000      -0.402      -8.583
+   nom_ss_125C_4v50                28.722       0.000       0.717       0.000
+   nom_ff_n40C_5v50                71.723       0.000       0.052       0.000
+   cierra timing en todos los corners: no
+
+-- Sintesis: 5073 celdas, 846 flip-flops
+   Las 5 celdas mas usadas:
+        681  gf180mcu_fd_sc_mcu7t5v0__nand2_1
+        653  gf180mcu_fd_sc_mcu7t5v0__mux2_2
+        512  gf180mcu_fd_sc_mcu7t5v0__dffq_1
+        442  gf180mcu_fd_sc_mcu7t5v0__nor2_1
+        391  gf180mcu_fd_sc_mcu7t5v0__aoi21_1
+   Area por modulo (jerarquia conservada con SYNTH_KEEP_HIERARCHY_MODULES):
+          74085.8 um2   51.5 %  espino_register_file
+          55863.4 um2   38.8 %  asic_top (resto del diseno, aplanado)
+          10005.7 um2    7.0 %  espino_alu
+           3942.6 um2    2.7 %  pochoco_cycle_counter
+         143897.6 um2  100.0 %  total del diseno
+
+-- Signoff
+   drc_magic      -
+   drc_klayout    -
+   drc_ruteo      -
+   lvs_errores    -
+   antena_redes   -
+   antena_pines   -
+   max_slew       4710
+   max_cap        58
+   corrida cerrada (criterios del enunciado): no (no termino)
